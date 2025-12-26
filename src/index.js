@@ -6,7 +6,7 @@ const tiffenData = [
   {
     name: "Idli",
     ingredients:
-      "streamed rice cake with spice podi oil, coconet chutney, sambar",
+      "Streamed rice cake with spice podi oil, coconet chutney, sambar",
     price: 6,
     photoName: "tiffen/idli.jpg",
     soldOut: false,
