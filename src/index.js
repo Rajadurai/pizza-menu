@@ -50,11 +50,11 @@ const tiffenData = [
 ];
 function App() {
   return (
-    <div className="container">
+    <>
       <Header />
       <Menu />
       <Footer />
-    </div>
+    </>
   );
 }
 
@@ -66,14 +66,26 @@ function Header() {
   );
 }
 function Menu() {
+  const tiffens = tiffenData;
+  const numTiffens = tiffens.length;
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <ul className="pizzas">
-        {tiffenData.map((tiffen) => (
-          <Tiffen tiffenObj={tiffen} key={tiffen.name} />
-        ))}
-      </ul>
+
+      {numTiffens > 0 ? (
+        <>
+          <p>
+            Authentic Indian cuisine. 6 creative dishes to choose from. All from
+            our kitchen, all organic, all delicious.
+          </p>
+          <ul className="pizzas">
+            {tiffens.map((tiffen) => (
+              <Tiffen tiffenObj={tiffen} key={tiffen.name} />
+            ))}
+          </ul>
+        </>
+      ) : null}
+
       {/* <Tiffen
         name="idli"
         ingredients="Streamed rice cake with spice podi oil, coconet chutney, sambar"
@@ -107,15 +119,21 @@ function Menu() {
     </main>
   );
 }
-function Tiffen(props) {
-  console.log(props);
+function Tiffen({ tiffenObj }) {
+  console.log(tiffenObj);
+  //if (tiffenObj.soldOut) return null;
   return (
-    <ul className="pizza">
-      <img src={props.tiffenObj.photoName} alt={props.tiffenObj.name} />
+    <ul className={`pizza ${tiffenObj.soldOut ? "sold-out" : ""}`}>
+      <img src={tiffenObj.photoName} alt={tiffenObj.name} />
       <div>
-        <h3>{props.tiffenObj.name}</h3>
-        <p>{props.tiffenObj.ingredients}</p>
-        <span>{props.tiffenObj.price}</span>
+        <h3>{tiffenObj.name}</h3>
+        <p>{tiffenObj.ingredients}</p>
+        {/* {tiffenObj.soldOut ? (
+          <span>SOLD OUT</span>
+        ) : (
+          <span>tiffenObj.price</span>
+        )} */}
+        <span>{tiffenObj.soldOut ? "SOLD OUT" : tiffenObj.price}</span>
       </div>
     </ul>
   );
@@ -128,14 +146,30 @@ function Footer() {
   console.log(isOpen);
   //if (hour >= openHour && hour <= closeHour) alert("We're Currently Open");
   //else alert("Sorry, soon will open  at " + openHour + "PM");
+  //if (!isOpen) return <p>CLOSED</p>;
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()} We're Currently Open
+      {isOpen ? (
+        <Order closeHour={closeHour} />
+      ) : (
+        <p>
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00
+        </p>
+      )}
     </footer>
   );
   //return React.createElement("footer", null, "we're currently open !");
 }
-
+function Order(props) {
+  return (
+    <div className="order">
+      <p>
+        We're open until {props.closeHour}:00. Come visit us or order online.{" "}
+      </p>
+      <button className="btn">Order</button>
+    </div>
+  );
+}
 // version 18
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
